@@ -45,3 +45,8 @@ class ArticleDeleteView(generics.DestroyAPIView):
 class CategoryView(generics.ListAPIView):
     queryset = Category.objects.all()
     serializer_class = serializers.CategorySerializer
+
+
+class CategoryCreateView(generics.CreateAPIView):
+    serializer_class = serializers.CategorySerializer
+    permission_classes = (permissions.IsAuthenticated, IsOwnerOrReadOnly)
