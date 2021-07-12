@@ -9,7 +9,7 @@ class Category(models.Model):
 
     def __str__(self):
         if not self.parent:
-            return f"No parent --> {self.name}"
+            return f"{self.name}"
         else:
             return f"{self.parent} --> {self.name}"
 
