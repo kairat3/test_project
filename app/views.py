@@ -47,6 +47,12 @@ class CategoryView(generics.ListAPIView):
     serializer_class = serializers.CategorySerializer
 
 
+class CategoryDeleteView(generics.DestroyAPIView):
+    queryset = Category.objects.all()
+    serializer_class = serializers.CategorySerializer
+    # permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly, )
+
+
 class CategoryCreateView(generics.CreateAPIView):
     serializer_class = serializers.CategorySerializer
     permission_classes = (permissions.IsAuthenticated, IsOwnerOrReadOnly)

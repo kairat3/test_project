@@ -4,22 +4,22 @@ import user.models
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=150)
+    category = models.SlugField(max_length=100, primary_key=True, blank=False)
     parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
-
-    def __str__(self):
-        if not self.parent:
-            return f"No parent --> {self.name}"
-        else:
-            return f"{self.parent} --> {self.name}"
 
     class Meta:
         verbose_name = 'category'
         verbose_name_plural = 'categories'
 
+    def __str__(self):
+        if not self.parent:
+            return f"Category: {self.category}"
+        else:
+            return f"{self.parent} --> {self.category}"
+
 
 class Article(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='articles')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='articles', blank=True)
     owner = models.ForeignKey(user.models.CustomUser, related_name='posts', on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
     description = models.TextField()
@@ -30,7 +30,7 @@ class Article(models.Model):
         ordering = ('created_at', )
 
     def __str__(self):
-        return f"{self.owner}-->{self.title}"
+        return f"{self.title}"
 
 
 class ArticleImages(models.Model):
