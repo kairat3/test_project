@@ -33,7 +33,7 @@ MANIFEST
 *.manifest
 *.spec
 /venv
-*.env
+#*.env
 #/media
 #/products
 #/images

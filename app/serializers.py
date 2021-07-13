@@ -6,7 +6,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = ('id', 'name', 'parent')
+        fields = ('category', 'parent', )
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
@@ -24,17 +24,23 @@ class ArticleImageSerializer(serializers.ModelSerializer):
 
 class ArticleSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.email')
-    category = CategorySerializer(many=False, read_only=True)
+    # category = CategorySerializer(many=False)
     images = ArticleImageSerializer(many=True, read_only=True)
 
     class Meta:
         model = Article
         fields = ('id', 'title', 'description', 'owner', 'category', 'images', )
 
+    def validate(self, attrs):
+        print(attrs)
+        return attrs
+
     def create(self, validated_data):
+        print(validated_data)
         request = self.context.get('request')
         images_data = request.FILES
         created_post = Article.objects.create(**validated_data)
+        print(created_post)
         images_obj = [
             ArticleImages(post=created_post, image=image) for image in images_data.getlist('images')
         ]
